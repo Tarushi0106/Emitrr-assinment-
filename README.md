@@ -1,7 +1,7 @@
 🎮 Pattern Decoder
 A challenging visual puzzle game that tests your pattern recognition skills! Observe flashing sequences on a 5x5 grid and decode the hidden rules across multiple levels of increasing complexity.
 
-https://img.shields.io/badge/Game-Pattern_Decoder-blue
+
 <img width="2880" height="1800" alt="image" src="https://github.com/user-attachments/assets/7bc6c93a-f52d-4bea-a9bf-d22b10fb2c72" />
 <img width="2880" height="1800" alt="image" src="https://github.com/user-attachments/assets/74dbd20b-68af-4ef5-aa34-65fb1eafbe31" />
 
