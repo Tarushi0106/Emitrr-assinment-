@@ -44,6 +44,7 @@ const App: React.FC = () => {
           level={gameState.level}
           timeRemaining={gameState.timeRemaining}
           isFlashing={gameState.isFlashing}
+          totalLevels={gameState.totalLevels}
         />
 
         <Grid

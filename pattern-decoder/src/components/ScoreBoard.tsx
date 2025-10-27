@@ -1,4 +1,5 @@
 import React from 'react';
+import { useAudio } from '../hooks/useAudio';
 
 interface ScoreBoardProps {
   score: number;
@@ -19,18 +20,20 @@ export const ScoreBoard: React.FC<ScoreBoardProps> = ({
   onRestart,
   isGuessing
 }) => {
-  // audio hook available if we want sounds; not used right now
-  // const { playClick } = useAudio();
+  const { playClick } = useAudio();
 
   const handleCheckSolution = () => {
+    playClick();
     onCheckSolution();
   };
 
   const handleNextLevel = () => {
+    playClick();
     onNextLevel();
   };
 
   const handleRestart = () => {
+    playClick();
     onRestart();
   };
 

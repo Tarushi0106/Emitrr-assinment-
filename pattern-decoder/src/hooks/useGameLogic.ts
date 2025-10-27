@@ -14,7 +14,8 @@ export const useGameLogic = () => {
     isGuessing: false,
     score: 0,
     timeRemaining: FLASH_DURATION / 1000,
-    showResults: false
+    showResults: false,
+    totalLevels: 5  // Set total number of levels
   });
 
   const { playClick, playFlash, playSuccess, playError, playLevelUp } = useAudio();
@@ -174,7 +175,8 @@ export const useGameLogic = () => {
       isGuessing: false,
       score: 0,
       timeRemaining: FLASH_DURATION / 1000,
-      showResults: false
+      showResults: false,
+      totalLevels: 5
     });
     
     setSquares(prev => prev.map(square => ({
