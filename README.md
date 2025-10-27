@@ -6,7 +6,6 @@ https://img.shields.io/badge/Game-Pattern_Decoder-blue
 <img width="2880" height="1800" alt="image" src="https://github.com/user-attachments/assets/74dbd20b-68af-4ef5-aa34-65fb1eafbe31" />
 
 <img width="2880" height="1800" alt="image" src="https://github.com/user-attachments/assets/40bceaa5-e74c-483c-9032-3dbce7be7cf4" />
-
 ✨ Features
 🎯 Core Gameplay
 5 Challenging Levels with unique pattern rules
@@ -277,3 +276,4 @@ Ready to test your pattern recognition skills? 🧠✨
 Start playing and see if you can master all 5 levels! The patterns get trickier, but so does the satisfaction of decoding them! 🏆
 
 Pattern Decoder - Challenge Your Mind, One Pattern at a Time 🎮
+
