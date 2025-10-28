@@ -61,6 +61,8 @@ const App: React.FC = () => {
           onNextLevel={nextLevel}
           onRestart={restartGame}
           isGuessing={gameState.isGuessing}
+          canProceed={gameState.canProceed}
+          hint={gameState.lastPatternHint}
         />
       </div>
     </div>

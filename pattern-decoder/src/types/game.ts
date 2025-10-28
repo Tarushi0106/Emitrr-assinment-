@@ -20,6 +20,8 @@ export interface GameState {
   timeRemaining: number;
   showResults: boolean;
   totalLevels: number;
+  canProceed: boolean;
+  lastPatternHint?: string;
 }
 
 export type Theme = 'light' | 'dark' | 'matrix';

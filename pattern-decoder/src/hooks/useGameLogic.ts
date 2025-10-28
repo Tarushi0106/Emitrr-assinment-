@@ -15,7 +15,9 @@ export const useGameLogic = () => {
     score: 0,
     timeRemaining: FLASH_DURATION / 1000,
     showResults: false,
-    totalLevels: 5  // Set total number of levels
+    totalLevels: 5, // Set total number of levels
+    canProceed: false,
+    lastPatternHint: undefined
   });
 
   const { playClick, playFlash, playSuccess, playError, playLevelUp } = useAudio();
@@ -102,6 +104,9 @@ export const useGameLogic = () => {
     const incorrectSelections = selectedIndices.filter(idx => !flashingIndices.includes(idx));
     const missedSelections = flashingIndices.filter(idx => !selectedIndices.includes(idx));
 
+    // Check if the solution is perfect (all correct selections and no incorrect ones)
+    const isPerfect = correctSelections.length === flashingIndices.length && incorrectSelections.length === 0;
+
     // Calculate score
     const levelScore = Math.max(0, 
       correctSelections.length * 10 - 
@@ -110,10 +115,8 @@ export const useGameLogic = () => {
     );
 
     // Play success or error sound based on performance
-    if (levelScore > 20) {
+    if (isPerfect) {
       playSuccess();
-    } else if (levelScore > 0) {
-      playClick(); // Neutral sound for medium performance
     } else {
       playError();
     }
@@ -126,10 +129,34 @@ export const useGameLogic = () => {
         : null
     })));
 
+    // Get level-specific hint based on the current pattern
+    let hint = 'Try to observe the pattern more carefully!';
+    if (!isPerfect) {
+      switch (gameState.level) {
+        case 1:
+          hint = 'Look for squares at even-numbered positions (0,2,4...)';
+          break;
+        case 2:
+          hint = 'The squares form lines from corner to corner!';
+          break;
+        case 3:
+          hint = 'These squares are at prime-numbered positions (2,3,5,7,11...)';
+          break;
+        case 4:
+          hint = 'Focus on the center square and its direct neighbors!';
+          break;
+        case 5:
+          hint = 'Add the row and column numbers, is there a pattern when divided by 3?';
+          break;
+      }
+    }
+
     setGameState(prev => ({
       ...prev,
       showResults: true,
-      score: prev.score + levelScore
+      score: prev.score + levelScore,
+      canProceed: isPerfect, // Only allow proceeding if the solution is perfect
+      lastPatternHint: !isPerfect ? hint : undefined // Show hint only if not perfect
     }));
   }, [gameState.level, squares, playClick, playSuccess, playError]);
 
@@ -153,7 +180,9 @@ export const useGameLogic = () => {
         isFlashing: true,
         isGuessing: false,
         showResults: false,
-        timeRemaining: FLASH_DURATION / 1000
+        timeRemaining: FLASH_DURATION / 1000,
+        canProceed: false,
+        lastPatternHint: undefined
       }));
     }
 
@@ -176,7 +205,9 @@ export const useGameLogic = () => {
       score: 0,
       timeRemaining: FLASH_DURATION / 1000,
       showResults: false,
-      totalLevels: 5
+      totalLevels: 5,
+      canProceed: false,
+      lastPatternHint: undefined
     });
     
     setSquares(prev => prev.map(square => ({

@@ -9,6 +9,8 @@ interface ScoreBoardProps {
   onNextLevel: () => void;
   onRestart: () => void;
   isGuessing: boolean;
+  canProceed: boolean;
+  hint?: string;
 }
 
 export const ScoreBoard: React.FC<ScoreBoardProps> = ({
@@ -18,7 +20,9 @@ export const ScoreBoard: React.FC<ScoreBoardProps> = ({
   onCheckSolution,
   onNextLevel,
   onRestart,
-  isGuessing
+  isGuessing,
+  canProceed,
+  hint
 }) => {
   const { playClick } = useAudio();
 
@@ -44,6 +48,12 @@ export const ScoreBoard: React.FC<ScoreBoardProps> = ({
         <div className="score-label">Points</div>
       </div>
       
+      {showResults && hint && !canProceed && (
+        <div className="hint-text" style={{ color: 'var(--accent-warning)', marginBottom: '1rem', textAlign: 'center' }}>
+          💡 Hint: {hint}
+        </div>
+      )}
+      
       <div className="controls">
         {isGuessing && !showResults && (
           <button className="btn btn-primary" onClick={handleCheckSolution}>
@@ -51,15 +61,21 @@ export const ScoreBoard: React.FC<ScoreBoardProps> = ({
           </button>
         )}
         
-        {showResults && level < 5 && (
+        {showResults && level < 5 && canProceed && (
           <button className="btn btn-success" onClick={handleNextLevel}>
             Next Level
           </button>
         )}
         
-        {showResults && level === 5 && (
+        {showResults && level === 5 && canProceed && (
           <button className="btn btn-complete" onClick={handleRestart}>
             Play Again
+          </button>
+        )}
+        
+        {showResults && !canProceed && (
+          <button className="btn btn-primary" onClick={() => window.location.reload()}>
+            Try Again
           </button>
         )}
         
