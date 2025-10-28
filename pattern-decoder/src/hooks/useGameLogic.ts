@@ -94,6 +94,43 @@ export const useGameLogic = () => {
     ));
   }, [gameState.isGuessing, gameState.showResults, playClick]);
 
+  const nextLevel = useCallback(() => {
+    playLevelUp(); // Play level up sound
+    
+    if (gameState.level >= 5) {
+      // Game completed
+      setGameState(prev => ({
+        ...prev,
+        level: 1,
+        isFlashing: true,
+        isGuessing: false,
+        showResults: false,
+        timeRemaining: FLASH_DURATION / 1000,
+        canProceed: false,
+        lastPatternHint: undefined
+      }));
+    } else {
+      setGameState(prev => ({
+        ...prev,
+        level: (prev.level + 1) as GameLevel,
+        isFlashing: true,
+        isGuessing: false,
+        showResults: false,
+        timeRemaining: FLASH_DURATION / 1000,
+        canProceed: false,
+        lastPatternHint: undefined
+      }));
+    }
+
+    // Reset squares
+    setSquares(prev => prev.map(square => ({
+      ...square,
+      isSelected: false,
+      isCorrect: null,
+      isFlashing: false
+    })));
+  }, [gameState.level, playLevelUp]);
+
   const checkSolution = useCallback(() => {
     playClick(); // Play click sound for button press
     
@@ -158,42 +195,15 @@ export const useGameLogic = () => {
       canProceed: isPerfect, // Only allow proceeding if the solution is perfect
       lastPatternHint: !isPerfect ? hint : undefined // Show hint only if not perfect
     }));
-  }, [gameState.level, squares, playClick, playSuccess, playError]);
 
-  const nextLevel = useCallback(() => {
-    playLevelUp(); // Play level up sound
-    
-    if (gameState.level >= 5) {
-      // Game completed
-      setGameState(prev => ({
-        ...prev,
-        level: 1,
-        isFlashing: true,
-        isGuessing: false,
-        showResults: false,
-        timeRemaining: FLASH_DURATION / 1000
-      }));
-    } else {
-      setGameState(prev => ({
-        ...prev,
-        level: (prev.level + 1) as GameLevel,
-        isFlashing: true,
-        isGuessing: false,
-        showResults: false,
-        timeRemaining: FLASH_DURATION / 1000,
-        canProceed: false,
-        lastPatternHint: undefined
-      }));
+    // If the solution is perfect, automatically advance after a short delay
+    if (isPerfect) {
+      // small timeout to allow visual/sound feedback before changing level
+      setTimeout(() => {
+        nextLevel();
+      }, 800);
     }
-
-    // Reset squares
-    setSquares(prev => prev.map(square => ({
-      ...square,
-      isSelected: false,
-      isCorrect: null,
-      isFlashing: false
-    })));
-  }, [gameState.level, playLevelUp]);
+  }, [gameState.level, squares, playClick, playSuccess, playError, nextLevel]);
 
   const restartGame = useCallback(() => {
     playClick(); // Play click sound for restart
